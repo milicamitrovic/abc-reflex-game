@@ -4,20 +4,19 @@ import { Card } from 'react-bootstrap';
 
 const LettersDisplay = () => {
   return (
-    <>
+    <div className="alphabet__card">
       {ALPHABET_DATA.map((letter) => (
         <Card
           key={letter.key}
           bg="light"
-          className="mb-2"
-          style={{ width: '18rem' }}
+          className={`${letter.scoreCount} alphabet__card--item mb-2`}
         >
-          <Card.Text>
+          <Card.Text className="alphabet__card--value">
             {letter.key}({letter.value})
           </Card.Text>
         </Card>
       ))}
-    </>
+    </div>
   );
 };
 

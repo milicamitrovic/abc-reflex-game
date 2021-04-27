@@ -1,0 +1,53 @@
+.game__display {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .game__display--difficulty {
+    display: flex;
+    justify-content: center;
+    label {
+      margin: 30px;
+    }
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto 0px;
+      font-weight: 500;
+      font-size: 18px;
+      width: 80px;
+      margin-right: 30px;
+      height: 40px;
+
+      &.button--start {
+        background-color: #e6c11e;
+        border: #e6c11e;
+        color: black;
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+      &.button--stop {
+        background-color: gray;
+        border: gray;
+        color: white;
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+    }
+    // button.button--start {
+    //   background-color: #e6c11e;
+    //   border: #e6c11e;
+    //   color: black;
+    // }
+    // button.button--stop {
+    // }
+    .game__display--displayNumber {
+      margin: 40px;
+    }
+  }
+}

@@ -153,24 +153,27 @@ function GameDisplay() {
   ];
   const numberDisplay = shownNumbers[shownNumbers.length - 1];
   return (
-    <div>
-      {radios.map((radio) => (
-        <ChooseDifficulty
-          gameOn={gameOn}
-          key={radio.value}
-          radio={radio}
-          value={valueForSpeed}
-          onClick={() => setValueForSpeed(radio.value)}
-        />
-      ))}
-      <Button
-        variant="primary"
-        onClick={gameOn ? () => endGame() : () => startGame()}
-      >
-        {gameOn ? 'Stop' : 'Start'}
-      </Button>
-      <div>{numberDisplay}</div>
-      <LettersDisplay />
+    <div className="game__display">
+      <div className="game__display--difficulty">
+        {radios.map((radio) => (
+          <ChooseDifficulty
+            gameOn={gameOn}
+            key={radio.value}
+            radio={radio}
+            value={valueForSpeed}
+            onClick={() => setValueForSpeed(radio.value)}
+          />
+        ))}
+        <Button
+          variant="primary"
+          onClick={gameOn ? () => endGame() : () => startGame()}
+          className={`${gameOn ? 'button--stop' : 'button--start'}`}
+        >
+          {gameOn ? 'Stop' : 'Start'}
+        </Button>
+      </div>
+      <p className="game__display--displayNumber">{numberDisplay}</p>
+      <LettersDisplay scoreCount={scoreCount} />
       <ScoreDisplay scoreCount={scoreCount} />
     </div>
   );
