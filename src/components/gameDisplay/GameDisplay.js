@@ -172,8 +172,8 @@ function GameDisplay() {
           {gameOn ? 'Stop' : 'Start'}
         </Button>
       </div>
-      <p className="game__display--displayNumber">{numberDisplay}</p>
-      <LettersDisplay scoreCount={scoreCount} />
+      <div className="game__display--displayNumber">Match: {numberDisplay}</div>
+      <LettersDisplay />
       <ScoreDisplay scoreCount={scoreCount} />
     </div>
   );
