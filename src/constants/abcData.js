@@ -1,4 +1,6 @@
 export const ALL = 'all';
+export const HIT = 'hit';
+export const MISS = 'miss';
 export const EASY = 'easy';
 export const MEDIUM = 'medium';
 export const HARD = 'hard';

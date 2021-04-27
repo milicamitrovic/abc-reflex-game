@@ -8,6 +8,8 @@ import {
   MEDIUM,
   HARD,
   ALL as all,
+  HIT,
+  MISS,
 } from '../../constants/abcData';
 import { Button } from 'react-bootstrap';
 
@@ -23,24 +25,115 @@ function GameDisplay() {
 
   const [valueForSpeed, setValueForSpeed] = useState('1');
   const [timeInterval, setTimeInterval] = useState(1);
+  const [scoreCount, setScoreCount] = useState({
+    hit: 0,
+    miss: 0,
+    left: alphabet.length,
+  });
+  const [keyIsPressed, setKeyIsPressed] = useState(false);
 
-  const endGame = useCallback(() => {
+  const isHitScore = () => {
+    setScoreCount((prevScore) => {
+      return {
+        ...prevScore,
+        hit: prevScore.hit + 1,
+        left: prevScore.left - 1,
+      };
+    });
+  };
+
+  const isMissScore = () => {
+    setScoreCount((prevScore) => {
+      return {
+        ...prevScore,
+        miss: prevScore.miss + 1,
+        left: prevScore.left - 1,
+      };
+    });
+  };
+
+  const endGame = () => {
     setGameOn(false);
     setShownNumbers([]);
 
     clearInterval(timeInterval);
-  }, [timeInterval]);
+  };
+
+  const startGame = () => {
+    setGameOn(true);
+    setScoreCount({ hit: 0, miss: 0, left: alphabet.length });
+  };
+
+  const setScoreByType = useCallback((shownValue, type) => {
+    setLettersToMatch((allLett) => {
+      return allLett.map((lett) =>
+        lett.value === shownValue
+          ? {
+              ...lett,
+              scoreCount:
+                shownNumbers.length === lettersToMatch.length
+                  ? lett.type
+                  : type,
+            }
+          : lett
+      );
+    });
+  }, []);
+
+  const defineScoreType = (e) => {
+    if (gameOn && !keyIsPressed && shownNumbers.length > 0) {
+      const keyValue = lettersToMatch.find(
+        (lettr) => lettr.key === e.key.toUpperCase()
+      )
+        ? lettersToMatch.find((lettr) => lettr.key === e.key.toUpperCase())
+            .value
+        : null;
+      const isMatched = keyValue === shownNumbers[shownNumbers.length - 1];
+      if (isMatched) {
+        isHitScore();
+        setScoreByType(shownNumbers[shownNumbers.length - 1], HIT);
+      } else {
+        isMissScore();
+        setScoreByType(shownNumbers[shownNumbers.length - 1], MISS);
+      }
+    }
+    setKeyIsPressed(true);
+  };
 
   const gameIsOn = () => {
+    if (shownNumbers.length === lettersToMatch.length) {
+      isMissScore();
+      endGame();
+      return;
+    }
+
+    if (
+      !keyIsPressed &&
+      shownNumbers.length > 0 &&
+      lettersToMatch.find(
+        (leftScore) => shownNumbers[shownNumbers.length - 1] === leftScore.value
+      ).scoreCount === all
+    ) {
+      isMissScore();
+    }
+    setKeyIsPressed(false);
+
     const shuffleNums = lettersToMatch.map((i) => i.value);
     let shuffleLetter = shuffleNums[Math.floor(Math.random() * 26)];
 
-    while (shownNumbers.find((num) => num === shuffleLetter)) {
+    while (gameOn && shownNumbers.find((num) => num === shuffleLetter)) {
       shuffleLetter = shuffleNums[Math.floor(Math.random() * 26)];
     }
 
     setShownNumbers((pr) => [...pr, shuffleLetter]);
   };
+
+  useEffect(() => {
+    window.addEventListener('keyup', defineScoreType);
+    return () => {
+      window.removeEventListener('keyup', defineScoreType);
+    };
+  }, [defineScoreType]);
 
   useEffect(() => {
     setTimeInterval(valueForSpeed * 1000);
@@ -72,13 +165,13 @@ function GameDisplay() {
       ))}
       <Button
         variant="primary"
-        onClick={gameOn ? () => endGame() : () => setGameOn(true)}
+        onClick={gameOn ? () => endGame() : () => startGame()}
       >
         {gameOn ? 'Stop' : 'Start'}
       </Button>
       <div>{numberDisplay}</div>
       <LettersDisplay />
-      <ScoreDisplay />
+      <ScoreDisplay scoreCount={scoreCount} />
     </div>
   );
 }
