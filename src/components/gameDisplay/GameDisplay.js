@@ -62,6 +62,7 @@ function GameDisplay() {
   const startGame = () => {
     setGameOn(true);
     setScoreCount({ hit: 0, miss: 0, left: alphabet.length });
+    lettersToMatch.map((e) => setScoreByType(e.value, all));
   };
 
   const setScoreByType = useCallback((shownValue, type) => {
@@ -115,6 +116,7 @@ function GameDisplay() {
       ).scoreCount === all
     ) {
       isMissScore();
+      setScoreByType(shownNumbers[shownNumbers.length - 1], MISS);
     }
     setKeyIsPressed(false);
 
@@ -173,8 +175,8 @@ function GameDisplay() {
         </Button>
       </div>
       <div className="game__display--displayNumber">Match: {numberDisplay}</div>
-      <LettersDisplay />
       <ScoreDisplay scoreCount={scoreCount} />
+      <LettersDisplay lettersToMatch={lettersToMatch} />
     </div>
   );
 }

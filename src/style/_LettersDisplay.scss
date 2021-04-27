@@ -12,12 +12,12 @@
       text-align: center;
       align-items: center;
       margin: auto;
-      .hit {
-        color: rgb(0, 255, 34);
-      }
-      .miss {
-        color: red;
-      }
+    }
+    &.hit {
+      background-color: rgb(144, 236, 149) !important;
+    }
+    &.miss {
+      background-color: rgb(228, 163, 147) !important;
     }
   }
 }
