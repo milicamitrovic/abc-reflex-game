@@ -1,43 +1,26 @@
-import React, { useState } from 'react';
-import { ToggleButton, ButtonGroup, Button } from 'react-bootstrap';
+import React from 'react';
+import { ToggleButton, ButtonGroup } from 'react-bootstrap';
 
-function ChooseDifficulty() {
-  const [checked, setChecked] = useState(false);
-  const [gameOn, setGameOn] = useState(false);
-
-  const radios = [
-    { name: 'Active', value: '1' },
-    { name: 'Radio', value: '2' },
-    { name: 'Radio', value: '3' },
-  ];
+const ChooseDifficulty = (props) => {
+  const { radio, gameOn, onClick, value } = props;
 
   return (
     <>
       <ButtonGroup toggle>
-        {radios.map((radio, id) => (
-          <ToggleButton
-            key={id}
-            type="radio"
-            variant="secondary"
-            name={radio.name}
-            value={radio.value}
-            checked={checked}
-            onChange={(e) => setChecked(e.currentTarget.checked)}
-          >
-            {radio.name}
-          </ToggleButton>
-        ))}
-      </ButtonGroup>
-      <div>
-        <Button
-          variant="primary"
-          onClick={gameOn ? () => setGameOn(false) : () => setGameOn(true)}
+        <ToggleButton
+          type="radio"
+          variant="secondary"
+          name={radio.name}
+          value={radio.value}
+          checked={value === radio.value}
+          onClick={() => onClick()}
+          disabled={gameOn}
         >
-          {gameOn ? 'Stop' : 'Start'}
-        </Button>
-      </div>
+          {radio.name}
+        </ToggleButton>
+      </ButtonGroup>
     </>
   );
-}
+};
 
 export default ChooseDifficulty;

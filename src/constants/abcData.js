@@ -1,3 +1,8 @@
+export const ALL = 'all';
+export const EASY = 'easy';
+export const MEDIUM = 'medium';
+export const HARD = 'hard';
+
 export const ALPHABET_DATA = [
   {
     key: 'A',
